@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101827">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="存钱作战室">
+<title>存钱作战室</title>
+<link rel="manifest" href="manifest.json">
+<style>
+:root{color-scheme:dark;--bg:#101827;--panel:#182337;--panel2:#202e44;--text:#f5f7fb;--muted:#aab7cb;--green:#57d49a;--orange:#ffc56d;--red:#ff7b86;--line:#30415a}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#101827,#0c1220);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:env(safe-area-inset-top) 16px calc(24px + env(safe-area-inset-bottom));}
+main{max-width:620px;margin:0 auto}.top{padding:22px 4px 14px}.eyebrow{color:var(--green);font-size:12px;font-weight:800;letter-spacing:1.6px}.top h1{margin:8px 0 5px;font-size:29px}.muted{color:var(--muted);font-size:13px;line-height:1.5}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:18px;margin:12px 0;box-shadow:0 8px 24px #0002}.hero{background:linear-gradient(140deg,#203a4a,#19263a)}.label{font-size:13px;color:var(--muted)}.big{font-size:34px;font-weight:850;margin:6px 0}.green{color:var(--green)}.red{color:var(--red)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{background:#ffffff08;padding:12px;border-radius:14px}.metric strong{display:block;font-size:18px;margin-top:6px}.section-title{font-size:18px;font-weight:800;margin:0 0 14px}.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field label{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}.field input,.field select{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:12px;color:var(--text);font-size:16px;min-width:0}.row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:12px 0;font-size:14px}.row strong{font-size:14px}.bar{height:8px;background:#ffffff12;border-radius:20px;overflow:hidden;margin-top:7px}.fill{height:100%;border-radius:20px;background:var(--green);width:0}.button{border:0;border-radius:13px;padding:13px 15px;background:var(--green);color:#082016;font-size:15px;font-weight:800;width:100%;cursor:pointer}.button.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}.hint{background:#ffc56d12;border:1px solid #ffc56d44;border-radius:13px;padding:12px;color:#ffe0ad;font-size:13px;line-height:1.5}.check{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}.check:last-child{border:0}.check input{width:20px;height:20px;accent-color:var(--green)}.tiny{font-size:11px;color:var(--muted);line-height:1.5}.footer{text-align:center;padding:12px 0 20px}.goalrow{display:flex;justify-content:space-between;align-items:center;gap:8px}.goalrow input{width:90px;background:var(--panel2);color:var(--text);border:1px solid var(--line);padding:8px;border-radius:9px;font-size:15px}
+</style>
+</head>
+<body><main>
+<header class="top"><div class="eyebrow">MY MONEY · MALAYSIA</div><h1>存钱作战室</h1><div class="muted">先存钱，再消费。一步一步摆脱月光。</div></header>
+<section class="card hero">
+ <div class="label">扣除生活费、债务与储蓄目标后，本月可安排金额</div>
+ <div class="big green" id="leftover">RM1,145.00</div>
+ <div class="muted" id="summary">按你的预算自动计算</div>
+ <div class="grid" style="margin-top:15px">
+  <div class="metric"><div class="label">每月收入</div><strong id="incomeMetric">RM3,400</strong></div>
+  <div class="metric"><div class="label">应急金进度</div><strong id="emergencyMetric">0%</strong></div>
+ </div>
+</section>
+<section class="card">
+ <h2 class="section-title">01 · 我的每月预算</h2>
+ <div class="field-grid">
+  <div class="field"><label for="income">到手工资（RM）</label><input id="income" type="number" min="0" step="50" value="3400"></div>
+  <div class="field"><label for="living">必要生活开销（RM）</label><input id="living" type="number" min="0" step="10" value="1005"></div>
+  <div class="field"><label for="debt">债务月供（RM）</label><input id="debt" type="number" min="0" step="10" value="950"></div>
+  <div class="field"><label for="cash">目前存款（RM）</label><input id="cash" type="number" min="0" step="50" value="500"></div>
+  <div class="field"><label for="target">每月先存（RM）</label><input id="target" type="number" min="0" step="50" value="300"></div>
+  <div class="field"><label for="spent">本月已花的弹性消费（RM）</label><input id="spent" type="number" min="0" step="10" value="0"></div>
+ </div>
+ <p class="tiny">输入会自动保存到这台设备的浏览器。请不要在公用设备使用。</p>
+</section>
+<section class="card">
+ <h2 class="section-title">02 · 预算分配</h2>
+ <div class="row"><span>必要生活开销</span><strong id="livingOut">RM1,005.00</strong></div><div class="bar"><div class="fill" id="livingBar"></div></div>
+ <div class="row"><span>债务还款</span><strong id="debtOut">RM950.00</strong></div><div class="bar"><div class="fill" id="debtBar" style="background:var(--orange)"></div></div>
+ <div class="row"><span>先存起来</span><strong id="targetOut">RM300.00</strong></div><div class="bar"><div class="fill" id="targetBar"></div></div>
+ <div class="row"><span>其他开销预算</span><strong id="flexOut">RM1,145.00</strong></div><div class="bar"><div class="fill" id="flexBar" style="background:#8f9dff"></div></div>
+ <div class="row"><span>其他开销剩余</span><strong id="flexRemaining">RM1,145.00</strong></div>
+ <div id="warning" class="hint">发薪日先转 RM300 到独立储蓄账户，再安排其他开销。</div>
+</section>
+<section class="card">
+ <h2 class="section-title">03 · 应急金目标</h2>
+ <div class="goalrow"><div><div class="label">建议目标：3 个月基础支出</div><div class="big" style="font-size:27px" id="emergencyTarget">RM5,865.00</div></div><div style="text-align:right"><div class="label">已存</div><strong id="cashOut">RM500.00</strong></div></div>
+ <div class="bar" style="height:12px;margin:15px 0"><div class="fill" id="emergencyBar" style="height:12px"></div></div>
+ <div class="muted" id="emergencyText">还需要继续累积应急金。</div>
+</section>
+<section class="card">
+ <h2 class="section-title">04 · 发薪日打卡</h2>
+ <label class="check"><input type="checkbox" data-check="save"> <span>先转储蓄，不等月底</span></label>
+ <label class="check"><input type="checkbox" data-check="bills"> <span>预留债务还款金额</span></label>
+ <label class="check"><input type="checkbox" data-check="weekly"> <span>设定本周消费上限</span></label>
+ <label class="check"><input type="checkbox" data-check="review"> <span>月底检查预算和实际支出</span></label>
+ <div class="row"><span>本月完成</span><strong id="checkCount">0 / 4</strong></div>
+ <button class="button secondary" id="resetChecks">重置本月打卡</button>
+</section>
+<section class="card">
+ <h2 class="section-title">05 · 给未来的自己</h2>
+ <div class="hint">手机不是不能买，而是先把应急金存起来。不要用 36–48 个月的高总成本分期来掩盖现金不足。</div>
+ <p class="muted">规则：不动应急金买手机；不借新债填补超支；预算不够就先调整目标，不要假装没发生。</p>
+ <button class="button" id="export">导出我的预算备份</button>
+ <p class="tiny">备份会下载成 JSON 文件。浏览器清除数据前，建议先导出保存。</p>
+</section>
+<div class="footer tiny">存钱作战室 · 个人预算工具 · 不连接银行、不自动扣款</div>
+</main>
+<script>
+const ids=['income','living','debt','cash','target','spent'];
+const money=n=>'RM'+Number(n||0).toLocaleString('en-MY',{minimumFractionDigits:2,maximumFractionDigits:2});
+function num(id){return Math.max(0,Number(document.getElementById(id).value)||0)}
+function state(){let s={};ids.forEach(id=>s[id]=document.getElementById(id).value);s.checks={};document.querySelectorAll('[data-check]').forEach(c=>s.checks[c.dataset.check]=c.checked);return s}
+function persist(){try{localStorage.setItem('moneyBattle',JSON.stringify(state()))}catch(e){}}
+function render(){
+ const income=num('income'),living=num('living'),debt=num('debt'),cash=num('cash'),target=num('target'),spent=num('spent');
+ const flex=income-living-debt-target,remaining=flex-spent,emergency=(living+debt)*3,progress=emergency>0?Math.min(100,cash/emergency*100):100;
+ document.getElementById('leftover').textContent=money(flex);
+ document.getElementById('leftover').className='big '+(flex>=0?'green':'red');
+ document.getElementById('summary').textContent=flex<0?'预算超支：请降低目标或重新检查开销。':'这是弹性消费总预算；已花费金额会从剩余额度扣除。';
+ document.getElementById('incomeMetric').textContent=money(income);
+ document.getElementById('emergencyMetric').textContent=Math.round(progress)+'%';
+ ['living','debt','target'].forEach(k=>document.getElementById(k+'Out').textContent=money(k==='living'?living:k==='debt'?debt:target));
+ document.getElementById('flexOut').textContent=money(Math.max(0,flex));
+ document.getElementById('flexRemaining').textContent=money(remaining);
+ document.getElementById('flexRemaining').className=remaining<0?'red':'';
+ [['livingBar',living],['debtBar',debt],['targetBar',target],['flexBar',Math.max(0,flex)]].forEach(([id,v])=>document.getElementById(id).style.width=(income>0?Math.min(100,v/income*100):0)+'%');
+ document.getElementById('warning').textContent=flex<0?'警告：你的预算已超出收入。不要靠信用卡或新分期补缺口。':remaining<0?'你已超出其他开销预算 '+money(-remaining)+'。先停止非必要消费，别动应急金。':'发薪日先转 '+money(target)+' 到独立储蓄账户；其他开销目前还剩 '+money(remaining)+'。';
+ document.getElementById('emergencyTarget').textContent=money(emergency);
+ document.getElementById('cashOut').textContent=money(cash);
+ document.getElementById('emergencyBar').style.width=progress+'%';
+ document.getElementById('emergencyText').textContent=cash>=emergency?'已达到三个月基础支出目标。': '还差 '+money(emergency-cash)+'。按每月存 '+money(target)+' 估算，约需 '+(target>0?Math.ceil((emergency-cash)/target)+' 个月':'—')+'。';
+ const count=[...document.querySelectorAll('[data-check]')].filter(c=>c.checked).length;
+ document.getElementById('checkCount').textContent=count+' / 4';
+ persist();
+}
+ids.forEach(id=>document.getElementById(id).addEventListener('input',render));
+document.querySelectorAll('[data-check]').forEach(c=>c.addEventListener('change',render));
+document.getElementById('resetChecks').addEventListener('click',()=>{document.querySelectorAll('[data-check]').forEach(c=>c.checked=false);render()});
+document.getElementById('export').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(state(),null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='money-battle-backup.json';a.click();URL.revokeObjectURL(a.href)});
+try{const s=JSON.parse(localStorage.getItem('moneyBattle')||'null');if(s){ids.forEach(id=>{if(s[id]!==undefined)document.getElementById(id).value=s[id]});document.querySelectorAll('[data-check]').forEach(c=>c.checked=!!(s.checks&&s.checks[c.dataset.check]))}}catch(e){}
+render();
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>
