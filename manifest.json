@@ -1,0 +1,9 @@
+{
+  "name": "存钱作战室",
+  "short_name": "存钱作战室",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#101827",
+  "theme_color": "#101827",
+  "lang": "zh-Hans"
+}
